@@ -1,4 +1,4 @@
-#Fri Jul 01 15:26:56 EAT 2022
-base.0=/home/mahad/My projects/DhiigPlus/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+#Sun Jul 03 18:59:23 AST 2022
+base.0=C\:\\Users\\HassAli\\SOURCES\\FLUTTER PROJECT\\DhiigPlus\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

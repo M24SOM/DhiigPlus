@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "936758211361",
+    "project_id": "dhiigplus",
+    "storage_bucket": "dhiigplus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936758211361:android:6fd61cccb526c520e48460",
+        "android_client_info": {
+          "package_name": "so.dhiigplus.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936758211361-dpak2rfi47e420jifhhij7e1tq7sou70.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "so.dhiigplus.app",
+            "certificate_hash": "fbbf7e8282b445d26bfa3e64f7796a51338f00ff"
+          }
+        },
+        {
+          "client_id": "936758211361-25dasjruhq2o0kmpv0gshjtvj1elj05m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD12zNTQ8I9Lzj6zR3IMMPIqBYgs3F47dM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936758211361-25dasjruhq2o0kmpv0gshjtvj1elj05m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

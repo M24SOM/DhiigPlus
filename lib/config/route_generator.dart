@@ -1,4 +1,5 @@
 import 'package:dhiigplus/screens/home.dart';
+import 'package:dhiigplus/screens/profile.dart';
 import 'package:flutter/material.dart';
 import '../auth/login.dart';
 import '../auth/singup.dart';
@@ -28,6 +29,11 @@ class RouteGenerator {
       case '/home':
         if (args is String) {
           return MaterialPageRoute(builder: (context) => const Home());
+        }
+        return _errorRoute();
+      case '/profile':
+        if (args is String) {
+          return MaterialPageRoute(builder: (context) => const Profile());
         }
         return _errorRoute();
       default:

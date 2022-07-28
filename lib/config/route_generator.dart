@@ -1,9 +1,9 @@
-import 'package:dhiigplus/screens/home.dart';
 import 'package:dhiigplus/screens/profile.dart';
 import 'package:flutter/material.dart';
 import '../auth/login.dart';
 import '../auth/singup.dart';
 import '../auth/splash.dart';
+import '../screens/root.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,7 +28,7 @@ class RouteGenerator {
         return _errorRoute();
       case '/home':
         if (args is String) {
-          return MaterialPageRoute(builder: (context) => const Home());
+          return MaterialPageRoute(builder: (context) => const Root());
         }
         return _errorRoute();
       case '/profile':

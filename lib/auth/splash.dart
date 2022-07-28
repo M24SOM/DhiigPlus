@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../global/global.dart';
 
@@ -12,11 +13,11 @@ class Splash extends StatefulWidget {
 class SplashState extends State<Splash> {
   startTimer() {
     Timer(const Duration(seconds: 3), () async {
-      if (fAuth.currentUser != null) {
+      if (await fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;
         appRouter.pushNamedAndRemoveUntil('/home', args: 'From Login Screen');
       } else {
-        appRouter.pushNamedAndRemoveUntil('/home', args: 'From Login Screen');
+        appRouter.pushNamedAndRemoveUntil('/login', args: 'From Login Screen');
       }
     });
   }
@@ -36,7 +37,7 @@ class SplashState extends State<Splash> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: const <Widget>[
           Icon(
-            Icons.bloodtype,
+            CupertinoIcons.drop_fill,
             size: 70,
             color: Colors.red,
           ),

@@ -7,6 +7,8 @@ import 'package:logger/logger.dart';
 import '../models/user_model.dart';
 import '../utils/navigation.dart';
 
+DateTime selectedDate = DateTime.now();
+
 // LOGGER
 var logger = Logger(
   printer: PrettyPrinter(
@@ -19,7 +21,7 @@ var logger = Logger(
       ),
 );
 // SING UP PAGE
-String selectedCountryCode = '';
+String selectedCountryCode = '+252';
 
 final List<String> bloodTypes = [
   'O-',
@@ -51,12 +53,19 @@ final List<String> districts = [
   'Dayniile'
 ];
 
+final List<String> hospital = [
+  'Madiina',
+  'Kalkaal',
+  'Shaafi',
+];
+
 TextEditingController fullNameController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController countryCodeController = TextEditingController();
 bool hidePassword = true;
 String? selectedDistrict;
+String? selectedhospital;
 String? selectedBloodType;
 
 // Verify

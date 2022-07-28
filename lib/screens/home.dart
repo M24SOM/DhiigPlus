@@ -1,8 +1,7 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:dhiigplus/screens/profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dhiigplus/constants/colors.dart';
+import 'package:dhiigplus/global/global.dart';
 import 'package:flutter/material.dart';
-
-import '../constants/colors.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,70 +11,152 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int pageIndex = 0;
-
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> requests =
+        FirebaseFirestore.instance.collection('Requests').snapshots();
+
     return Scaffold(
-      body: getBody(),
-      bottomNavigationBar: getFooter(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          selectedTab(2);
-        },
-        backgroundColor: primary,
-        child: const Icon(
-          Icons.bloodtype,
-          size: 25,
+        appBar: AppBar(
+          title: const Text('Donate'),
+          centerTitle: true,
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
         ),
-        //params
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
+        body: StreamBuilder<QuerySnapshot>(
+          stream: requests,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
 
-  Widget getBody() {
-    List<Widget> pages = [
-      const Center(
-        child: Text('Home'),
-      ),
-      const Profile(),
-      const Center(
-        child: Text('Find Donors'),
-      ),
-    ];
-    return IndexedStack(
-      index: pageIndex,
-      children: pages,
-    );
-  }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading");
+            }
 
-  Widget getFooter() {
-    List<IconData> iconItems = [
-      Icons.home,
-      Icons.person,
-    ];
+            final requestsData = snapshot.data!;
+            print(requestsData);
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                return Card(
+                  elevation: 1,
+                  shadowColor: Colors.red,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: SizedBox(
+                    width: 350,
+                    height: 200,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Name",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: Color(0xff67727d)),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    data["name"],
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                // onlineDriverData.email!,
 
-    return AnimatedBottomNavigationBar(
-      activeColor: primary,
-      splashColor: secondary,
-      inactiveColor: Colors.black,
-      icons: iconItems,
-      activeIndex: pageIndex,
-      gapLocation: GapLocation.center,
-      notchSmoothness: NotchSmoothness.softEdge,
-      leftCornerRadius: 10,
-      iconSize: 30,
-      rightCornerRadius: 10,
-      onTap: (index) {
-        selectedTab(index);
-      },
-    );
-  }
-
-  selectedTab(index) {
-    setState(() {
-      pageIndex = index;
-    });
+                                "${selectedDate.toLocal()}".split(' ')[0],
+                                textAlign: TextAlign.end,
+                                style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.red),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Location",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13,
+                                color: Color(0xff67727d)),
+                          ),
+                          Text(
+                            data["district"],
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Blood Type",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: Color(0xff67727d)),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    data['bloodType'],
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                child: TextButton(
+                                    onPressed: () {},
+                                    child: const Text(
+                                      'Donate',
+                                      style: TextStyle(color: primary),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            );
+          },
+        ));
   }
 }

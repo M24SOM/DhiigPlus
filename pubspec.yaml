@@ -37,11 +37,13 @@ dependencies:
   firebase_core: ^1.19.1
   firebase_auth: ^3.4.1
   firebase_database: ^9.0.18
+  cloud_firestore: ^3.2.1
   fluttertoast: ^8.0.9
   provider: ^6.0.3
   logger: ^1.1.0
   country_code_picker: ^2.0.2
   animated_bottom_navigation_bar: ^0.3.2
+  pinput: ^2.2.11
 
 
 dev_dependencies:

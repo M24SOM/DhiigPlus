@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "936758211361",
-    "project_id": "dhiigplus",
-    "storage_bucket": "dhiigplus.appspot.com"
+    "project_number": "742884900318",
+    "project_id": "dhiigplus-4c41e",
+    "storage_bucket": "dhiigplus-4c41e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936758211361:android:6fd61cccb526c520e48460",
+        "mobilesdk_app_id": "1:742884900318:android:5911269e2b2b621192f14f",
         "android_client_info": {
           "package_name": "so.dhiigplus.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "936758211361-dpak2rfi47e420jifhhij7e1tq7sou70.apps.googleusercontent.com",
+          "client_id": "742884900318-378l4k7rcgjn8b0m4r6lgiicg22eemkp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "so.dhiigplus.app",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "936758211361-25dasjruhq2o0kmpv0gshjtvj1elj05m.apps.googleusercontent.com",
+          "client_id": "742884900318-k8jd5s5u088t51anqllrq6si6k2f1v30.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD12zNTQ8I9Lzj6zR3IMMPIqBYgs3F47dM"
+          "current_key": "AIzaSyCk8jLz0LRU2Zf3E1D9x01wzgVYVSlBY5E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "936758211361-25dasjruhq2o0kmpv0gshjtvj1elj05m.apps.googleusercontent.com",
+              "client_id": "742884900318-k8jd5s5u088t51anqllrq6si6k2f1v30.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

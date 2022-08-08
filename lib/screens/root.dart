@@ -40,7 +40,7 @@ class _RootState extends State<Root> {
   Widget getBody() {
     List<Widget> pages = [
       const Home(),
-      const Profile(),
+      const ProfilePage(),
       const FindDonor(),
     ];
     return IndexedStack(

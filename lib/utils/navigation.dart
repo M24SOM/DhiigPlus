@@ -46,7 +46,7 @@ class NavigationService {
 
   Future<T?> pushAndRemoveUntil<T extends Object?>(
     Route<T> route, {
-    _RoutePredicate? predicate,
+    _RoutePredicate? predicate, required String args,
   }) async {
     return navigationKey.currentState?.pushAndRemoveUntil<T>(
       route,

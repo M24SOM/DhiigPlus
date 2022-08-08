@@ -13,6 +13,17 @@ class FindDonor extends StatefulWidget {
 class _FindDonorState extends State<FindDonor> {
   CollectionReference requests =
       FirebaseFirestore.instance.collection('Requests');
+  final firestoreInstance = FirebaseFirestore.instance;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    selectedBloodType = '';
+    selectedDistrict = '';
+    selectedhospital = '';
+    patientNameController.clear();
+  }
 
   Future requestDonation() async {
     return requests
@@ -21,7 +32,8 @@ class _FindDonorState extends State<FindDonor> {
           'district': selectedDistrict,
           'bloodType': selectedBloodType,
           'date': selectedDate,
-          'name': 'Shirwac',
+          'phoneNumber': phone,
+          'name': patientNameController.text.trim(),
         })
         .then((value) => print("Request Added $value"))
         .catchError((error) => print("Failed to add Request: $error"));
@@ -51,6 +63,36 @@ class _FindDonorState extends State<FindDonor> {
               margin: const EdgeInsets.only(left: 30, right: 30, top: 40),
               child: Column(
                 children: [
+                  TextFormField(
+                    controller: patientNameController,
+                    textCapitalization: TextCapitalization.words,
+                    autofillHints: const [AutofillHints.name],
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 2,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Patient name'.toUpperCase(),
+                      enabledBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.person_outline,
+                        color: Colors.black87,
+                        // size: 20,
+                      ),
+                      labelStyle: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+
                   DropdownButtonHideUnderline(
                     child: Column(
                       // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -229,57 +271,57 @@ class _FindDonorState extends State<FindDonor> {
                     ),
                   ),
                   // PASSWORD
-                  TextFormField(
-                    autofillHints: const [AutofillHints.password],
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                      height: 2,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Add Notes'.toUpperCase(),
-                      labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 253, 31, 31),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.lock_open_outlined,
-                        color: Colors.black87,
-                        // size: 20,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: hidePassword
-                            ? const Icon(
-                                Icons.visibility_off,
-                                color: Colors.black54,
-                              )
-                            : const Icon(
-                                Icons.visibility,
-                                color: Colors.black87,
-                              ),
-                        onPressed: () {
-                          setState(() {
-                            hidePassword = !hidePassword;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  //       TextFormField(
+                  //         autofillHints: const [AutofillHints.password],
+                  //         style: const TextStyle(
+                  //           color: Colors.black87,
+                  //           fontFamily: 'Montserrat',
+                  //           fontWeight: FontWeight.w500,
+                  //           fontSize: 18,
+                  //           height: 2,
+                  //         ),
+                  //         decoration: InputDecoration(
+                  //           labelText: 'Add Notes'.toUpperCase(),
+                  //           labelStyle: const TextStyle(
+                  //             color: Color.fromARGB(255, 253, 31, 31),
+                  //           ),
+                  //           enabledBorder: const UnderlineInputBorder(
+                  //             borderSide: BorderSide(color: Colors.grey),
+                  //           ),
+                  //           focusedBorder: const UnderlineInputBorder(
+                  //             borderSide: BorderSide(color: Colors.red),
+                  //           ),
+                  //           prefixIcon: const Icon(
+                  //             Icons.lock_open_outlined,
+                  //             color: Colors.black87,
+                  //             // size: 20,
+                  //           ),
+                  //           suffixIcon: IconButton(
+                  //             icon: hidePassword
+                  //                 ? const Icon(
+                  //                     Icons.visibility_off,
+                  //                     color: Colors.black54,
+                  //                   )
+                  //                 : const Icon(
+                  //                     Icons.visibility,
+                  //                     color: Colors.black87,
+                  //                   ),
+                  //             onPressed: () {
+                  //               setState(() {
+                  //                 hidePassword = !hidePassword;
+                  //               });
+                  //             },
+                  //           ),
+                  //         ),
+                  //       ),
 
-                  // District
+                  //       // District
 
                   const SizedBox(height: 20),
                 ],
               ),
             ),
-            // FULL NAME
+            // // FULL NAME
 
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),

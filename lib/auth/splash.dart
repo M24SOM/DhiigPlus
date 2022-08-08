@@ -17,7 +17,7 @@ class SplashState extends State<Splash> {
         currentFirebaseUser = fAuth.currentUser;
         appRouter.pushNamedAndRemoveUntil('/home', args: 'From Login Screen');
       } else {
-        appRouter.pushNamedAndRemoveUntil('/login', args: 'From Login Screen');
+        appRouter.pushNamedAndRemoveUntil('/signUp', args: 'From Login Screen');
       }
     });
   }

@@ -1,4 +1,3 @@
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -151,11 +150,9 @@ class _LoginState extends State<Login> {
                         focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.red),
                         ),
-                        prefix: CountryCodePicker(
-                          initialSelection: selectedCountryCode,
-                          onChanged: assistant.onCountryChange,
-                          showCountryOnly: false,
-                          showOnlyCountryWhenClosed: false,
+                        prefix: const Text(
+                          '+252 ',
+                          style: TextStyle(color: Colors.red),
                         ),
                         prefixIcon: const Icon(
                           Icons.phone_outlined,
@@ -241,8 +238,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () {
-                          final phone =
-                              selectedCountryCode + phoneController.text.trim();
+                          final phone = '+252${phoneController.text.trim()}';
 
                           loginUser(phone, context);
                         },

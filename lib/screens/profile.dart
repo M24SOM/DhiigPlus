@@ -1,154 +1,288 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dhiigplus/constants/colors.dart';
+import 'package:dhiigplus/global/global.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+import '../models/user_model.dart';
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
-  final _UserNameContorller = TextEditingController();
+class _ProfilePageState extends State<ProfilePage> {
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
   final bloodTypeController = TextEditingController();
-  final _PhoneContorller = TextEditingController();
-  final _controller = TextEditingController();
+  final locationController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
-  void dispose() {
-    bloodTypeController.dispose();
-    _PhoneContorller.dispose();
-    _UserNameContorller.dispose();
-    // _lastNameContorller.dispose();
-    // _controller.dispose();
-    super.dispose();
+  void initState() {
+    // nameController.text = "Mohamed Abdirahman";
+    // phoneController.text = "0617 678 889";
+    // bloodTypeController.text = "B+";
+    // locationController.text = "Hawlwadaag";
+    // passwordController.text = "1234567890";
+    super.initState();
   }
+
+  final firestoreInstance = FirebaseFirestore.instance;
+  var userModel = UserModel();
+
+  Future getDocument() async {
+    print("getDocument");
+
+    //assume there is a collection called "users"
+    var uid = fAuth.currentUser!.uid; //the unique user id/document id
+
+    firestoreInstance.collection("users").doc(uid).get().then((querySnapshot) {
+      print("result");
+      print(querySnapshot.data()!);
+
+      //convert the result to a model
+    });
+  }
+
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
+    getDocument();
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.pinkAccent,
-                    width: 1.0,
-                  ),
-                ),
-                child: const CircleAvatar(
-                  radius: 50.0,
-                  backgroundImage: AssetImage("images/logo.jpg"),
-                )),
-            // ignore: prefer_const_constructors
-            SizedBox(
-              height: 18,
-            ),
+      appBar: AppBar(
+        backgroundColor: primary,
+        centerTitle: true,
+        title: const Text('Profile'),
+      ),
+      body: FutureBuilder(
+        future: users.doc(fAuth.currentUser!.uid).get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text("Something went wrong");
+          }
 
-            // hellow again
-            const Text(
-              'DhiigPlus+',
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 32.0,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            // ignore: prefer_const_constructors
-            SizedBox(
-              height: 40,
-            ),
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return Text("Document does not exist, ${fAuth.currentUser!.uid}");
+          }
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 254, 254),
-                  border:
-                      Border.all(color: const Color.fromARGB(255, 230, 8, 8)),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18),
-                  child: TextField(
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            nameController.text = data["fullname"];
+            phoneController.text = data["phoneNumber"];
+            bloodTypeController.text = data["bloodType"];
+            locationController.text = data["district"];
+
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Name
+                  TextFormField(
+                    controller: nameController,
                     enabled: false,
-                    controller: _UserNameContorller,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Name or Username',
-                        prefixIcon: Icon(Icons.person, color: Colors.red),
-                        fillColor: Color(0x00000064)),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(
-              height: 18,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  border:
-                      Border.all(color: const Color.fromARGB(255, 236, 18, 18)),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 18),
-                  child: TextField(
-                    enabled: false,
-                    keyboardType: TextInputType.number,
-                    obscureText: true,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 1.6,
+                    ),
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Phone Number',
-                        prefixIcon: Icon(
-                          Icons.call,
-                          color: Colors.red,
-                        )),
+                      labelText: 'Your name',
+                      filled: true,
+                      fillColor: Colors.grey.shade200,
+                      border: UnderlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), //Add rounded corners
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.person,
+                        color: Colors.black38,
+                        //size: 30,
+                      ),
+                      labelStyle: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 18),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    // color: Color.fromARGB(255, 255, 247, 247),
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 223, 21, 21)),
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color.fromARGB(255, 250, 250, 248)),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18),
-                  child: TextField(
+                  // Phone Number
+                  TextFormField(
+                    controller: phoneController,
                     enabled: false,
-                    controller: bloodTypeController,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Blood Type',
-                        prefixIcon: Icon(
-                          Icons.bloodtype,
-                          color: Colors.red,
-                        ),
-                        // prefixIcon: Icon(Icons.email),
-                        fillColor: Color(0x00000064)),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 1.6,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Phone Number',
+                      filled: true,
+                      fillColor: Colors.grey.shade200,
+                      border: UnderlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), //Add rounded corners
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.phone_in_talk,
+                        color: Colors.black38,
+                        //size: 30,
+                      ),
+                      labelStyle: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  // Blood Type
+                  TextFormField(
+                    controller: bloodTypeController,
+                    enabled: false,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 1.6,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Blood Type',
+                      filled: true,
+                      fillColor: Colors.grey.shade200,
+                      border: UnderlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), //Add rounded corners
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.water_drop,
+                        color: Colors.black38,
+                        //size: 30,
+                      ),
+                      labelStyle: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  // Location
+                  TextFormField(
+                    controller: locationController,
+                    enabled: false,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      height: 1.6,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Location',
+                      filled: true,
+                      fillColor: Colors.grey.shade200,
+                      border: UnderlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(10.0), //Add rounded corners
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.pin_drop_rounded,
+                        color: Colors.black38,
+                        //size: 30,
+                      ),
+                      labelStyle: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  // Password
+                  // TextFormField(
+                  //   controller: passwordController,
+                  //   obscureText: true,
+                  //   obscuringCharacter: '*',
+                  //   enabled: false,
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.w500,
+                  //     fontSize: 18,
+                  //     height: 1.6,
+                  //   ),
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Password',
+                  //     filled: true,
+                  //     fillColor: Colors.grey.shade200,
+                  //     border: UnderlineInputBorder(
+                  //       borderRadius:
+                  //           BorderRadius.circular(10.0), //Add rounded corners
+                  //     ),
+                  //     prefixIcon: const Icon(
+                  //       Icons.lock,
+                  //       color: Colors.black38,
+                  //       //size: 30,
+                  //     ),
+                  //     labelStyle: const TextStyle(
+                  //       color: Colors.grey,
+                  //     ),
+                  //   ),
+                  // ),
+                  // TextButton(
+                  //   onPressed: () {},
+                  //   child: const Text(
+                  //     'Change password',
+                  //     style: TextStyle(
+                  //       fontSize: 12,
+                  //       color: Colors.blue,
+                  //     ),
+                  //   ),
+                  // ),
+                  Divider(
+                    height: 60,
+                    thickness: 1,
+                    color: Colors.grey.shade400,
+                  ),
+
+                  Center(
+                    child: TextButton.icon(
+                      style: TextButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 60),
+                          alignment: const Alignment(-0.999, 0)),
+                      onPressed: () async {
+                        setState(() {
+                          appRouter.pushNamedAndRemoveUntil('/splash',
+                              args: 'From Logout');
+                          FirebaseAuth.instance.signOut();
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.power_settings_new_outlined,
+                        color: primary,
+                        size: 30,
+                      ),
+                      label: const Text(
+                        "Log out",
+                        style: TextStyle(fontSize: 20, color: primary),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
+            );
+          }
+
+          return Text("loading");
+        },
+        // child:
       ),
     );
   }

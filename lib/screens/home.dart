@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dhiigplus/constants/colors.dart';
 import 'package:dhiigplus/global/global.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -84,7 +85,7 @@ class _HomeState extends State<Home> {
                               Text(
                                 // onlineDriverData.email!,
 
-                                "${selectedDate.toLocal()}".split(' ')[0],
+                                data["date"].toDate().toString().split(' ')[0],
                                 textAlign: TextAlign.end,
                                 style: const TextStyle(
                                     fontSize: 17,
@@ -141,7 +142,10 @@ class _HomeState extends State<Home> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                 child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      customLaunch(
+                                          'tel:+252${data['phoneNumber']}');
+                                    },
                                     child: const Text(
                                       'Donate',
                                       style: TextStyle(color: primary),
@@ -158,5 +162,13 @@ class _HomeState extends State<Home> {
             );
           },
         ));
+  }
+}
+
+customLaunch(command) async {
+  if (await canLaunchUrl(Uri.parse(command))) {
+    await launchUrl(Uri.parse(command));
+  } else {
+    print('could not launch $command');
   }
 }

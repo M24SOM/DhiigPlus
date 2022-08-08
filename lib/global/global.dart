@@ -60,6 +60,7 @@ final List<String> hospital = [
 ];
 
 TextEditingController fullNameController = TextEditingController();
+TextEditingController patientNameController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController countryCodeController = TextEditingController();
@@ -70,6 +71,8 @@ String? selectedBloodType;
 
 // Verify
 final verifyController = TextEditingController();
+// phone
+String phone = '';
 
 // Firebase User
 final FirebaseAuth fAuth = FirebaseAuth.instance;

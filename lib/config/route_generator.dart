@@ -33,7 +33,7 @@ class RouteGenerator {
         return _errorRoute();
       case '/profile':
         if (args is String) {
-          return MaterialPageRoute(builder: (context) => const Profile());
+          return MaterialPageRoute(builder: (context) => const ProfilePage());
         }
         return _errorRoute();
       default:
